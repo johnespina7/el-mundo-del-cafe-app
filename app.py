@@ -11,7 +11,13 @@ st.subheader("Recomendación personalizada de café")
 
 # Autenticación Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+import os
+import json
+
+# Leer el secreto como diccionario
+creds_json = os.environ["GOOGLE_CREDENTIALS"]
+creds_dict = json.loads(creds_json)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 
 # Leer respuestas desde Google Sheets
