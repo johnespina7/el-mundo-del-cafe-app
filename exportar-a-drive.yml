@@ -1,0 +1,26 @@
+
+name: Exportar respuestas a Google Drive
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Ejecuta diariamente a las 03:00 UTC
+  workflow_dispatch:      # Permite ejecución manual desde GitHub
+
+jobs:
+  exportar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Crear archivo de credenciales
+        run: echo "${{ secrets.CREDENCIALES_JSON }}" > credentials.json
+
+      - name: Ejecutar script de exportación
+        run: python exportar_respuestas_drive.py
